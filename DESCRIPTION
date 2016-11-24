@@ -1,0 +1,10 @@
+Package: fourXPS
+Type: Package
+Title: Simulated spectra for 4MOST Observations
+Version: 1.0
+Date: 2016-11-14
+Author: Luke Davies
+Maintainer: Luke Davies <luke.davies@uwa.edu.au>
+Description: Gernerates mock spectra for surveys and allows simulated observations of these spectra using the current 4MOST instrument design
+License: GPL-3
+Depends: R (>= 3.0), spec.tools, auto.z, FITSio, astro, magicaxis

@@ -1,15 +1,25 @@
 make.ETCpar<-function(simName,id, EXPSec, NSub, MagIn, MagSim, airMass=1.4, IQ=1.1, skyBright=21.77,tilt=6.0, misAlign=0.1, systemModelDir='/Users/lukehome/work/ICRAR_work/4MOST/IWG8/Mock_test/4FS-ETC_app/4FS_ETC_system_model_v0.2/'){
 
 
+  EXPSec<-paste(EXPSec, sep='', collapse=" ")
+  NSub<-paste(NSub, sep='', collapse=" ")
+  MagIn<-paste(MagIn, sep='', collapse=" ")
+  if (length(MagSim)==1){MagSim<-paste(MagSim, sep='', collapse=" ")}
+  if (length(MagSim)>1){MagSim<-paste(MagSim,sep='', collapse=":")}
+  airMass<-paste(airMass, sep='', collapse=" ")
+  IQ<-paste(IQ, sep='', collapse=" ")
+  skyBright<-paste(skyBright, sep='', collapse=" ")
+  tilt<-paste(tilt, sep='', collapse=" ")
+  misAlign<-paste(misAlign, sep='', collapse=" ")
+
   fileConn<-file(paste(simName,'_tmp.ETC',sep=''))
   writeLines("#OBJECTNAME    FILENAME    RULESET   SIZ   REDSHIFT     MAG    MAG_RANGE", fileConn)   
   close(fileConn)
   
-  
-  cat(paste(simName,'_',id,'  ', simName,'/',simName,'_',id,'.fits   NONE   0    0   ',MagIn, '   ', MagSim, sep='') ,'\n',file=paste(simName,'_tmp.ETC',sep=''),append=TRUE)
-  
-  system(paste('cp ',.libPaths(),'/fourXPS/data/ETC_input_params_middle.txt ',simName,'_ETC_input_params_tmp.txt',sep=''))
-  
+
+    cat(paste(simName,'_',id,'  ', simName,'/',simName,'_',id,'.fits   NONE   0    0   ',MagIn, '   ', MagSim, sep='') ,'\n',file=paste(simName,'_tmp.ETC',sep=''),append=TRUE)
+
+
   
   cat(paste('SIM.CODE_NAME                = "',simName,'"                                                                          # Human readable codename for this run of the 4FS_TS',sep=''),'\n',file=paste(simName,'_ETC_input_params_tmp.txt',sep=''),append=TRUE)
   cat(paste('SIM.OUTDIR                   = "./tmpETC',simName,'"                                                                 # Where should we put output files?',sep=''),'\n',file=paste(simName,'_ETC_input_params_tmp.txt',sep=''),append=TRUE)

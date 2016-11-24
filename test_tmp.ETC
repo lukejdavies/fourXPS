@@ -1,0 +1,2 @@
+#OBJECTNAME    FILENAME    RULESET   SIZ   REDSHIFT     MAG    MAG_RANGE
+test_1  test/test_1.fits   NONE   0    0   23   23 

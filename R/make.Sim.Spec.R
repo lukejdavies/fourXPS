@@ -1,17 +1,21 @@
-make.Sim.Spec<-function(id, z, mag, band, col, mass, sfr, agn, res=0.25, passCut=-10.3, outName='testSim'){
+make.Sim.Spec<-function(id, z, mag, band, col, mass, sfr, agn, res=0.25, passCut=-10.3, simName='testSim'){
 
-    system(paste('mkdir ', outName, sep=''))
+    system(paste('mkdir ', simName, sep=''))
     load(paste(.libPaths(),'/fourXPS/data/modelSpecTab.Rdata',sep=''))
+    load(paste(.libPaths(),'/fourXPS/data/modelSpecData.Rdata',sep=''))
     logsSFR<-log10(modelTab$SFR/(10.^modelTab$LOGMSTAR))
     HA_EW<-modelTab$HA_EW
-    spec_a<-readFITS(paste(.libPaths(),'/fourXPS/data/',modelTab$MODNAME[1],sep=''))
-    axDat<-spec_a$axDat
+    
+    
+    spec_a<-models[[names(models[35])]]
+    axDat<-models[[names(models[35])]]$axDat
 
     sSFR<-sfr/(10.^mass)
     
-    spm<-read.table(paste(.libPaths(),'/fourXPS/data/csp_Zeq1p0_chab.sed',sep=''), header=F)
+    
+    load(paste(.libPaths(),'/fourXPS/data/csp_Zeq1p0_chab.Rdata',sep=''))
     age<-unique(spm[,1])
-    spm2<-read.table(paste(.libPaths(),'/fourXPS/data/csp_Zeq0p2_chab.sed',sep=''), header=F)
+    load(paste(.libPaths(),'/fourXPS/data/csp_Zeq0p2_chab.Rdata',sep=''))
     age2<-unique(spm2[,1])
 
     tmpArr<-array(NA,dim=c(6252,2,(length(age)+length(age2))))
@@ -69,18 +73,24 @@ make.Sim.Spec<-function(id, z, mag, band, col, mass, sfr, agn, res=0.25, passCut
             ##########################
             
 
-            ### Get correct model ####       
-            spec<-get.spec(paste(.libPaths(),'/fourXPS/data/',modelTab$MODNAME[match],sep=''), xunit='ang', yunit='ang', z=0)
+            ### Get correct model ####  
+ 
+            spec<-models[[names(models)[which(names(models)==modelTab$MODNAME[match])]]]
+            tmp_mag<-magABspec(spec,filter='r')
+          
         }
 
         if (agn[i]!='F'){
             agn_reds<-c(0.1,0.3,0.5,0.7,1.1,1.3,1.55,1.85,2.25,2.75,3.5,4.5,6.0)
             agn_redsN<-c('010','030','050','070','110','130','155','185','225','275','350','450','600')
             z_match<-agn_redsN[which(abs(z[i]-agn_reds)==min(abs(z[i]-agn_reds)))]
-
-            if (agn[i]=='B'){name<-paste(.libPaths(),'/fourXPS/data/AGN_v1.0_z',z_match,'_mr165_type1.fits',sep='')}
-            if (agn[i]=='N'){name<-paste(.libPaths(),'/fourXPS/data/AGN_v1.0_z',z_match,'_mr165_type2.fits',sep='')}       
-            spec<-get.spec(name, xunit='ang', yunit='ang', z=agn_reds[which(abs(z[i]-agn_reds)==min(abs(z[i]-agn_reds)))])
+            z_match<-z_match[1]
+            if (agn[i]=='B'){name<-paste('AGN_v1.0_z',z_match,'_mr165_type1.fits',sep='')}
+            if (agn[i]=='N'){name<-paste('AGN_v1.0_z',z_match,'_mr165_type2.fits',sep='')}       
+      
+            spec<-models[[names(models)[which(names(models)==name)]]]
+            spec$z<-agn_reds[which(abs(z[i]-agn_reds)==min(abs(z[i]-agn_reds)))]
+            
             spec$wave<-spec$wave/(1+spec$z)
             spec$z<-0
         }
@@ -91,8 +101,8 @@ make.Sim.Spec<-function(id, z, mag, band, col, mass, sfr, agn, res=0.25, passCut
         specNew$z<-z[i]
 
         ### Interpolate back to sensible wavelength range ###
-        specNew$flux<-approx(specNew$wave,specNew$flux,seq(3000,10000,res))$y
-        specNew$wave<-seq(3000,10000,res)
+        specNew$flux<-approx(specNew$wave,specNew$flux,seq(3000,12000,res))$y
+        specNew$wave<-seq(3000,12000,res)
 
         specNew$flux[which(is.finite(specNew$flux)==F)]<-0.0
 
@@ -106,6 +116,8 @@ make.Sim.Spec<-function(id, z, mag, band, col, mass, sfr, agn, res=0.25, passCut
         ### Scale to desired r-mag ###
         wavefac=1e-10
         c<-299792458
+        
+        
 
         if (z[i]<0.6) {filter=getfilt('r')[,2:3]}
         if (z[i]>=0.6) {filter=getfilt('i')[,2:3]}
@@ -129,7 +141,6 @@ make.Sim.Spec<-function(id, z, mag, band, col, mass, sfr, agn, res=0.25, passCut
         flux_sc_Hz <- fluxnu*(flux_need/flux_filt)
         flux_sc <- (flux_sc_Hz*(2.998e18))/(specNew$wave^2)
        
-
         
        ##########################################
         
@@ -177,7 +188,7 @@ make.Sim.Spec<-function(id, z, mag, band, col, mass, sfr, agn, res=0.25, passCut
          
         }
 
-        specComp<-list(wave=specNew$wave,flux=flux_sc)
+        specComp<-list(wave=specNew$wave,flux=flux_sc, xunit='ang', yunit='ang')
         i_mag<-magABspec(specComp,filter='i')
         
         spm_wave<-tmpArr[,1,sel2]
@@ -254,12 +265,12 @@ make.Sim.Spec<-function(id, z, mag, band, col, mass, sfr, agn, res=0.25, passCut
         flux_sc_Hz <- fluxnu*(flux_need/flux_filt)
         flux_sc <- (flux_sc_Hz*(2.998e18))/(specNew$wave^2)
         
-        name<-paste(outName,'/',outName,'_',id[i],'.fits',sep='')
+        name<-paste(simName,'/',simName,'_',id[i],'.fits',sep='')
                
 
         ### Save spectrum ###
         writeFITSim(cbind(flux_sc), file = name, axDat = axDat, type='single')
-        write.fitskey('OBJECT',paste(outName,'_',id[i], sep=''), name, comment = 'redshift', hdu = 1)            
+        write.fitskey('OBJECT',paste(simName,'_',id[i], sep=''), name, comment = 'redshift', hdu = 1)            
         write.fitskey('Z',z[i], name, comment = 'redshift', hdu = 1)
         write.fitskey('BAND',band, name, comment = 'band', hdu = 1)
         write.fitskey('MAG',mag[i], name, comment = 'magnitude in band', hdu = 1)
