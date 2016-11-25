@@ -278,7 +278,10 @@ make.Sim.Spec<-function(id, z, mag, band, col, mass, sfr, agn, res=0.25, passCut
         write.fitskey('BUNIT','erg/s/cm2/Angstrom', name, comment = 'flux density unit', hdu = 1)
         write.fitskey('ABMAG AB',mag[i], name, comment = 'SDSS r-mag', hdu = 1)
         write.fitskey('RESOLUTN',2, name, comment = 'resolution', hdu = 1)
-
+        write.fitskey('COL',col[i], name, comment = 'input g-i colour', hdu = 1)
+        write.fitskey('MASS',mass[i], name, comment = 'inpout log stellar mass', hdu = 1)
+        write.fitskey('SFR',sfr[i], name, comment = 'input sfr', hdu = 1)
+        write.fitskey('AGN',agn[i], name, comment = 'input AGN flag', hdu = 1)
       
         
 

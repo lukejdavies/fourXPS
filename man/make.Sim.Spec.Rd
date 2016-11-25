@@ -1,11 +1,11 @@
-\name{make.Sim.Spec}
+?make.Sim.Spec\name{make.Sim.Spec}
 \alias{make.Sim.Spec}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
 Function to generate mock simulated spectra
 }
 \description{
-This function allows the user to generate multiple mock spectra at FITS files based on a series of redshift, magnitude, g-i colour, stellar mass, sfr and AGN-class inputs. 
+This function allows the user to generate multiple mock spectra as FITS files based on a series of redshift, magnitude, g-i colour, stellar mass, sfr and AGN-class inputs. 
 }
 \usage{
 make.Sim.Spec(id, z, mag, band, col, mass, sfr, agn, res=0.25, passCut=-10.3, simName='testSim')
