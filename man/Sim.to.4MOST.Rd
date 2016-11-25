@@ -8,7 +8,7 @@ Simulate a single spectrum and mock observe using 4MOST
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-Sim.to.4MOST(z=z, mag=mag, band=band, col=col, mass=mass, sfr=sfr, agn=agn, res=0.25, passCut=-10.3, EXPSec=EXPSec, NSub=NSub, airMass=1.4, IQ=1.1, skyBright=21.77,tilt=6.0, misAlign=0.1, ETCPath='/Users/lukehome/work/ICRAR_work/4MOST/IWG8/Mock_test/4FS-ETC_app/4most2/code/bin/', systemModelDir='/Users/lukehome/work/ICRAR_work/4MOST/IWG8/Mock_test/4FS-ETC_app/4FS_ETC_system_model_v0.2/', verbose=F)
+Sim.to.4MOST(z=z, mag=mag, band=band, col=col, mass=mass, sfr=sfr, agn=agn, res=0.6, passCut=-10.3, EXPSec=EXPSec, NSub=NSub, airMass=1.4, IQ=1.1, skyBright=21.77,tilt=6.0, misAlign=0.1, ETCPath='/Users/lukehome/work/ICRAR_work/4MOST/IWG8/Mock_test/4FS-ETC_app/4most2/code/bin/', systemModelDir='/Users/lukehome/work/ICRAR_work/4MOST/IWG8/Mock_test/4FS-ETC_app/4FS_ETC_system_model_v0.2/', verbose=F)
   
 }
 %- maybe also 'usage' for other objects documented here.
@@ -126,7 +126,7 @@ Luke Davies
 }
 \examples{
 
-spec<-Sim.to.4MOST(z=0.1, mag=21, band='r', col=0.75, mass=10.5, sfr=5, agn='F', res = 0.25, passCut = -10.3, EXPSec=9000, NSub=8, airMass = 1.4, IQ = 1.1, skyBright = 21.77, tilt = 6, misAlign = 0.1,verbose = F)
+spec<-Sim.to.4MOST(z=0.1, mag=21, band='r', col=0.75, mass=10.5, sfr=5, agn='F', res = 0.6, passCut = -10.3, EXPSec=9000, NSub=8, airMass = 1.4, IQ = 1.1, skyBright = 21.77, tilt = 6, misAlign = 0.1,verbose = F)
 spec.plot(spec)
 
 }

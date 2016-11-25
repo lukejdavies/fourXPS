@@ -8,7 +8,7 @@ Find minimum exposure time required to obtain a redshift using simulated 4MOST o
 High level function that combines, simulated spectrum generation (make.Sim.spec), mock 4MOST observations (using the 4MOST ETC) and redshifting (using auto.z). Code allows user to input simulated spectral paramters and 4MOST observing conditions, and will then return the minimum exposure time required to obtain a secure and correct redshift for the input paramters.  
 }
 \usage{
-EXP.4.Z(z=z, mag=mag, band=band, col=col, mass=mass, sfr=sfr, agn=agn, res=0.25, passCut=-10.3, TSub=1200, MaxTime=6, airMass=1.4, IQ=1.1, skyBright=21.77,tilt=6.0, misAlign=0.1, offZ=0.05, reqProb=0.95, plot=T, ETCPath='/Users/lukehome/work/ICRAR_work/4MOST/IWG8/Mock_test/4FS-ETC_app/4most2/code/bin/', systemModelDir='/Users/lukehome/work/ICRAR_work/4MOST/IWG8/Mock_test/4FS-ETC_app/4FS_ETC_system_model_v0.2/', verbose=F) 
+EXP.4.Z(z=z, mag=mag, band=band, col=col, mass=mass, sfr=sfr, agn=agn, res=0.6, passCut=-10.3, TSub=1200, MaxTime=6, airMass=1.4, IQ=1.1, skyBright=21.77,tilt=6.0, misAlign=0.1, offZ=0.05, reqProb=0.95, plot=T, ETCPath='/Users/lukehome/work/ICRAR_work/4MOST/IWG8/Mock_test/4FS-ETC_app/4most2/code/bin/', systemModelDir='/Users/lukehome/work/ICRAR_work/4MOST/IWG8/Mock_test/4FS-ETC_app/4FS_ETC_system_model_v0.2/', verbose=F) 
 
 }
 %- maybe also 'usage' for other objects documented here.
@@ -131,7 +131,7 @@ Luke Davies
 
 #This code will generate a single spectrum with redshift=0.3, fibre magnitude=22.5 in the 'r' band, g-i colour of 1.1, stellar mass=10^10 (M*/Msun) and SFR= 0.01 (i.e. this will use a passive template). The simulated spectrum will have an output resultion of 0.25 Ang/pix and does not use an AGN=like template. Observations are simulated with 1200sec subsexposires for a maximum obsering time of 6h. The maximum allowable offset between the auto.z-determined redshfit and input redshift is 0.01 and the auto-z redshift must be secure to 0.99 probability.   
 
-Out<-EXP.4.Z(z=0.3, mag=22.0, band='r', col=1.1, mass=10.0, sfr=0.01, agn='F', res=0.25, TSub=1200, MaxTime=6, airMass=1.4, IQ=1.1, skyBright=21.77,tilt=6.0, misAlign=0.1, offZ=0.01, reqProb=0.99, plot=T, verbose=T)
+Out<-EXP.4.Z(z=0.3, mag=22.0, band='r', col=1.1, mass=10.0, sfr=0.01, agn='F', res=0.6, TSub=1200, MaxTime=6, airMass=1.4, IQ=1.1, skyBright=21.77,tilt=6.0, misAlign=0.1, offZ=0.01, reqProb=0.99, plot=T, verbose=T)
   
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
